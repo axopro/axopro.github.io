@@ -140,18 +140,26 @@ const DKIM_SELECTORS = ["google", "selector1", "selector2", "default", "k1", "k2
 
 async function checkDkim(domain: string, provider: string | null): Promise<Check> {
   const base = { id: "dkim", area: "correo" as const, title: "DKIM (firma de los correos)", weight: 1 };
+  // Una clave DKIM real: "p=" seguido de una clave en base64 (no vale cualquier TXT).
+  const isKey = (t: string) => /(^|;)\s*p=[A-Za-z0-9+/]{40,}/.test(t.replace(/"\s*"/g, "").replace(/"/g, ""));
+  // Control: un selector inventado. Si responde, el dominio tiene DNS comodín y
+  // esas respuestas no cuentan como DKIM.
+  const control = `x${Math.random().toString(36).slice(2, 10)}._domainkey.${domain}`;
+  const [ctrlTxt, ctrlCname] = await Promise.all([dns(control, "TXT").catch(() => null), dns(control, "CNAME").catch(() => null)]);
+  const wildTxt = new Set((ctrlTxt?.Answer ?? []).filter((a) => a.type === 16).map((a) => a.data));
+  const wildCname = new Set((ctrlCname?.Answer ?? []).filter((a) => a.type === 5).map((a) => a.data));
   const found: string[] = [];
   await Promise.all(DKIM_SELECTORS.map(async (s) => {
     try {
-      const r = await dns(`${s}._domainkey.${domain}`, "TXT");
-      const recs = (r.Answer ?? []).filter((a) => /v=DKIM1|k=rsa|p=/i.test(a.data));
-      if (recs.length) found.push(s);
-      else {
-        const c = await dns(`${s}._domainkey.${domain}`, "CNAME");
-        if ((c.Answer ?? []).some((a) => a.type === 5)) found.push(s);
-      }
+      const name = `${s}._domainkey.${domain}`;
+      const r = await dns(name, "TXT");
+      if ((r.Answer ?? []).some((a) => a.type === 16 && !wildTxt.has(a.data) && isKey(a.data))) { found.push(s); return; }
+      // Proveedores que delegan por CNAME (Microsoft 365, SendGrid, Mailchimp...)
+      const c = await dns(name, "CNAME");
+      if ((c.Answer ?? []).some((a) => a.type === 5 && !wildCname.has(a.data) && /domainkey|dkim/i.test(a.data))) found.push(s);
     } catch { /* selector no responde */ }
   }));
+  found.sort();
   if (found.length) return { ...base, level: "ok", summary: "Los correos salen firmados digitalmente.",
     detail: `Selectores encontrados: ${found.join(", ")}`, fix: "" };
   return { ...base, level: "warn",

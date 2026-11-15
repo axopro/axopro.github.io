@@ -76,7 +76,7 @@ test("dominio bien configurado saca nota alta", async () => {
     "bien.com|MX": [{ type: MX, data: "1 aspmx.l.google.com." }],
     "bien.com|TXT": [{ type: TXT, data: '"v=spf1 include:_spf.google.com -all"' }],
     "_dmarc.bien.com|TXT": [{ type: TXT, data: '"v=DMARC1; p=reject; rua=mailto:d@bien.com"' }],
-    "google._domainkey.bien.com|TXT": [{ type: TXT, data: '"v=DKIM1; k=rsa; p=MIIBIjAN"' }],
+    "google._domainkey.bien.com|TXT": [{ type: TXT, data: '"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx8W4Egd5cMLDNl0"' }],
   }, { https: { status: 200, headers: SAFE_HEADERS }, httpLocation: "https://bien.com/", certDays: 60, expiry: "2030-01-01T00:00:00Z", ad: true });
   const r = await scanDomain("bien.com");
   assert.equal(r.provider, "Google Workspace");
@@ -119,4 +119,25 @@ test("dominio sin correo no penaliza DKIM", async () => {
   assert.equal(byId(r, "mx")?.level, "info");
   assert.equal(byId(r, "dkim"), undefined);
   assert.match(byId(r, "mx")!.fix, /v=spf1 -all/);
+});
+
+test("DNS comodín no cuenta como DKIM (caso real ralarsa.com)", async () => {
+  const apexTxt = [{ type: TXT, data: '"v=spf1 mx -all"' }, { type: TXT, data: '"MS=ms83508249"' }];
+  const zone: Zone = {
+    "w.com|MX": [{ type: MX, data: "10 mx.w.com." }],
+    "w.com|TXT": apexTxt,
+    "mailjet._domainkey.w.com|TXT": [{ type: TXT, data: '"k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIx8W4Egd5cMLDNl0"' }],
+    "selector1._domainkey.w.com|CNAME": [{ type: 5, data: "selector1-w-com._domainkey.w.onmicrosoft.com." }],
+  };
+  // Cualquier otro *._domainkey.w.com responde con el comodín: CNAME al apex + TXT del apex
+  const proxy = new Proxy(zone, { get: (z, k: string) => z[k] ?? (k.includes("._domainkey.w.com|TXT") ? [{ type: 5, data: "w.com." }, ...apexTxt] : k.includes("._domainkey.w.com|CNAME") ? [{ type: 5, data: "w.com." }] : undefined) });
+  mockFetch(proxy, { https: "fail" });
+  const r = await scanDomain("w.com");
+  assert.equal(byId(r, "dkim")?.level, "ok");
+  assert.match(byId(r, "dkim")!.detail, /Selectores encontrados: mailjet, selector1$/);
+
+  // Solo comodín, sin claves reales: no debe dar DKIM por bueno
+  mockFetch(new Proxy({ "v.com|MX": zone["w.com|MX"] } as Zone, { get: (z, k: string) => z[k] ?? (k.includes("._domainkey.v.com") ? [{ type: 5, data: "v.com." }, { type: TXT, data: '"v=spf1 mx -all"' }] : undefined) }), { https: "fail" });
+  const r2 = await scanDomain("v.com");
+  assert.equal(byId(r2, "dkim")?.level, "warn");
 });
