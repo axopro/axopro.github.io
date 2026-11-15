@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FórmulaFácil — fórmulas de Excel y Google Sheets en español</title>
+<meta name="description" content="Describe lo que quieres en español y obtén la fórmula de Excel o Google Sheets lista para pegar, con SUMA, BUSCARV y punto y coma.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#"><span class="mark">=</span>FórmulaFácil</a>
+  <nav><a href="#app">Probar</a><a href="#precios">Precios</a><a href="#faq">FAQ</a></nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Escribe lo que necesitas.<br>Te damos la fórmula.</h1>
+    <p>Excel y Google Sheets <strong>en español</strong>: SUMA, BUSCARV, SI.CONJUNTO y separador <code>;</code>. Pega y funciona.</p>
+  </section>
+
+  <section id="app" class="card">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-mode="generar" role="tab">Generar</button>
+      <button class="tab" data-mode="explicar" role="tab">Explicar</button>
+      <button class="tab" data-mode="script" role="tab">Macro/Script</button>
+    </div>
+
+    <div class="opts">
+      <label>Programa
+        <select id="platform"><option value="excel">Excel</option><option value="sheets">Google Sheets</option></select>
+      </label>
+      <label>Idioma de funciones
+        <select id="lang"><option value="es">Español (SUMA ; )</option><option value="en">Inglés (SUM , )</option></select>
+      </label>
+    </div>
+
+    <textarea id="input" rows="4" maxlength="2000" placeholder="Ej.: suma la columna C si la columna A es «Madrid» y la fecha de B es de este mes"></textarea>
+    <div class="examples" id="examples"></div>
+
+    <div class="row">
+      <button id="go" class="primary">Generar</button>
+      <span id="quota" class="muted"></span>
+    </div>
+
+    <div id="out" class="out" hidden>
+      <div class="result"><pre id="res"></pre><button id="copy" class="ghost">Copiar</button></div>
+      <h3>Cómo funciona</h3><p id="exp"></p>
+      <h3>Ejemplo</h3><p id="ej"></p>
+    </div>
+    <p id="err" class="err" hidden></p>
+
+    <details id="hist-wrap"><summary>Historial</summary><ul id="hist"></ul></details>
+  </section>
+
+  <section id="precios">
+    <h2>Precios</h2>
+    <div class="plans">
+      <div class="plan"><h3>Gratis</h3><p class="price">0 €</p><ul><li>5 consultas al día</li><li>Fórmulas, explicaciones y macros</li><li>Sin registro</li></ul></div>
+      <div class="plan pro"><h3>Pro</h3><p class="price">4,99 €<small>/mes</small></p><ul><li>Consultas ilimitadas</li><li>Historial sin límite</li><li>Soporte por email</li></ul>
+        <a id="buy" class="primary btn" href="#" target="_blank" rel="noopener">Hazte Pro</a>
+        <label class="lic">¿Ya tienes licencia?<input id="license" placeholder="Pega tu clave"></label>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Por qué en español?</summary><p>Excel en español usa otros nombres (BUSCARV, no VLOOKUP) y <code>;</code> como separador. Las herramientas en inglés te dan fórmulas que fallan al pegarlas.</p></details>
+    <details><summary>¿Guardáis mis datos?</summary><p>No guardamos el texto que escribes. El historial vive solo en tu navegador.</p></details>
+    <details><summary>¿Puedo cancelar Pro?</summary><p>Sí, cuando quieras, desde el email de la compra.</p></details>
+  </section>
+</main>
+
+<footer class="muted">© FórmulaFácil · Las fórmulas las genera una IA: revísalas antes de usarlas en datos importantes.</footer>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

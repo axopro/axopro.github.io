@@ -1,0 +1,14 @@
+name = "formulafacil-api"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ALLOWED_ORIGIN = "https://axopro.github.io"
+FREE_DAILY_LIMIT = "5"
+MODEL = "claude-opus-5-5"
+
+# Crea el KV con: npx wrangler kv namespace create USAGE  y pega aquí el id
+[[kv_namespaces]]
+binding = "USAGE"
+id = "PEGA_AQUI_EL_ID"
