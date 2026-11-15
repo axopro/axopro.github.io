@@ -1,11 +1,13 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
+import { normalizeDomain, scanDomain } from "./scan";
 
 export interface Env {
   ANTHROPIC_API_KEY: string;
   ALLOWED_ORIGIN: string; // p. ej. https://axopro.github.io
   FREE_DAILY_LIMIT: string; // consultas gratis por IP y día
   MODEL: string;
+  SCAN_DAILY_LIMIT: string; // escaneos por IP y día
   USAGE: KVNamespace; // contadores diarios + licencias Pro
 }
 
@@ -61,7 +63,7 @@ function cors(env: Env, origin: string | null): Record<string, string> {
   const allowed = origin && (origin === env.ALLOWED_ORIGIN || origin.startsWith("http://localhost"));
   return {
     "Access-Control-Allow-Origin": allowed ? origin! : env.ALLOWED_ORIGIN,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Expose-Headers": "X-Remaining",
     Vary: "Origin",
@@ -79,6 +81,7 @@ export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const h = cors(env, req.headers.get("Origin"));
     if (req.method === "OPTIONS") return new Response(null, { headers: h });
+    if (new URL(req.url).pathname === "/scan") return handleScan(req, env, h);
     if (req.method !== "POST") return json({ error: "Método no permitido" }, 405, h);
 
     const parsed = ReqSchema.safeParse(await req.json().catch(() => null));
@@ -133,3 +136,33 @@ export default {
     }
   },
 };
+
+async function handleScan(req: Request, env: Env, h: Record<string, string>): Promise<Response> {
+  if (req.method !== "GET") return json({ error: "Método no permitido" }, 405, h);
+  const domain = normalizeDomain(new URL(req.url).searchParams.get("d") ?? "");
+  if (!domain) return json({ error: "Escribe un dominio válido, por ejemplo: miempresa.es" }, 400, h);
+
+  // Caché de 1 h por dominio: no cuenta para el límite.
+  const cacheKey = `scan:${domain}`;
+  const cached = await env.USAGE.get(cacheKey);
+  if (cached) return new Response(cached, { headers: { ...h, "Content-Type": "application/json; charset=utf-8", "X-Cache": "HIT" } });
+
+  const ip = req.headers.get("CF-Connecting-IP") ?? "anon";
+  const usageKey = `scanuse:${new Date().toISOString().slice(0, 10)}:${ip}`;
+  const used = Number((await env.USAGE.get(usageKey)) ?? 0);
+  const limit = Number(env.SCAN_DAILY_LIMIT || 30);
+  if (used >= limit) return json({ error: `Has llegado al límite de ${limit} análisis de hoy.` }, 429, { ...h, "X-Remaining": "0" });
+
+  try {
+    const report = await scanDomain(domain);
+    const body = JSON.stringify(report);
+    await Promise.all([
+      env.USAGE.put(usageKey, String(used + 1), { expirationTtl: 60 * 60 * 26 }),
+      env.USAGE.put(cacheKey, body, { expirationTtl: 3600 }),
+    ]);
+    return new Response(body, { headers: { ...h, "Content-Type": "application/json; charset=utf-8", "X-Remaining": String(limit - used - 1) } });
+  } catch (err) {
+    console.error("scan", domain, err);
+    return json({ error: "No se pudo analizar el dominio. Inténtalo de nuevo." }, 502, h);
+  }
+}

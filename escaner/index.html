@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escáner de seguridad para pymes</title>
+<meta name="description" content="Analiza en segundos el correo, la web y el dominio de una empresa y genera un informe en español que entiende cualquiera.">
+<link rel="stylesheet" href="escaner.css">
+</head>
+<body>
+<header class="top no-print">
+  <a class="logo" href="./"><span class="mark">✓</span>Escáner de seguridad</a>
+  <nav><a href="#marca">Tu marca</a><a href="#como">Cómo funciona</a></nav>
+</header>
+
+<main>
+  <section class="hero no-print">
+    <h1>¿Puede alguien hacerse pasar por tu empresa?</h1>
+    <p>Escribe el dominio y en segundos verás si el correo, la web y el dominio están bien protegidos. Solo usamos información pública.</p>
+    <form id="form" class="search">
+      <input id="domain" inputmode="url" autocomplete="off" placeholder="miempresa.es" aria-label="Dominio" required>
+      <button class="primary" id="go">Analizar</button>
+    </form>
+    <p id="err" class="err" hidden></p>
+    <p id="quota" class="muted"></p>
+  </section>
+
+  <section id="report" class="report" hidden>
+    <div class="brand" id="brand"></div>
+    <div class="rep-head">
+      <div>
+        <p class="muted small">Informe de seguridad</p>
+        <h2 id="r-domain"></h2>
+        <p class="muted small" id="r-date"></p>
+      </div>
+      <div class="score" id="r-score"><span id="r-num"></span><small>/10</small></div>
+    </div>
+    <p id="r-verdict" class="verdict"></p>
+    <div id="r-groups"></div>
+    <div class="actions no-print">
+      <label class="toggle"><input type="checkbox" id="tech" checked> Incluir detalles técnicos</label>
+      <button class="primary" id="pdf">Descargar PDF</button>
+    </div>
+    <p class="muted small disclaimer">Análisis pasivo de información pública (DNS, HTTPS, Certificate Transparency y RDAP). Es una foto del momento, no una auditoría completa.</p>
+    <div class="brand-foot" id="brand-foot"></div>
+  </section>
+
+  <section id="marca" class="card no-print">
+    <h2>Tu marca en el informe</h2>
+    <p class="muted">Si eres técnico, pon tus datos: saldrán en el PDF que entregas al cliente. Se guardan solo en este navegador.</p>
+    <div class="grid">
+      <label>Nombre o empresa<input id="b-name" placeholder="Josep · Soporte IT"></label>
+      <label>Teléfono<input id="b-phone" placeholder="600 000 000"></label>
+      <label>Email<input id="b-email" placeholder="hola@tuweb.es"></label>
+      <label>Web<input id="b-web" placeholder="tuweb.es"></label>
+    </div>
+  </section>
+
+  <section id="como" class="no-print">
+    <h2>Qué revisamos</h2>
+    <ul class="list">
+      <li><strong>Correo:</strong> SPF, DKIM y DMARC. Sin ellos, cualquiera puede enviar correos como si fueras tú, y tus correos acaban en spam.</li>
+      <li><strong>Web:</strong> HTTPS, redirección segura, caducidad del certificado y cabeceras de seguridad.</li>
+      <li><strong>Dominio:</strong> DNSSEC y fecha de caducidad.</li>
+    </ul>
+    <p class="muted">No escaneamos puertos ni probamos contraseñas: solo leemos lo que cualquiera puede consultar.</p>
+  </section>
+</main>
+<footer class="muted no-print">Herramienta gratuita · 30 análisis al día</footer>
+<script src="../config.js"></script>
+<script src="escaner.js"></script>
+</body>
+</html>

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "check": "tsc"
+    "check": "tsc",
+    "test": "node --import tsx --test test/*.test.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261115.1",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "wrangler": "^4.162.0"
   },

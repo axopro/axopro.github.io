@@ -1,3 +1,33 @@
+# Proyectos en axopro.github.io
+
+| Proyecto | URL | Qué es |
+|---|---|---|
+| **Escáner de seguridad** | `/escaner/` | Informe en español de la seguridad del correo, la web y el dominio de una pyme |
+| FórmulaFácil | `/` | Fórmulas de Excel/Sheets en español con IA |
+
+Los dos comparten el mismo Cloudflare Worker (`worker/`): `GET /scan?d=dominio` para el escáner y `POST /` para las fórmulas.
+
+## Escáner de seguridad
+
+Análisis **pasivo**: solo información pública. No escanea puertos ni prueba credenciales.
+
+| Área | Comprobación | Fuente |
+|---|---|---|
+| Correo | MX y proveedor, SPF, DMARC, DKIM (24 selectores comunes) | DNS sobre HTTPS (Cloudflare) |
+| Web | HTTPS, redirección http→https, cabeceras de seguridad, versión expuesta | petición HTTPS |
+| Web | Caducidad del certificado | Certificate Transparency (crt.sh) |
+| Dominio | DNSSEC, caducidad del dominio | DoH (bit AD), RDAP (rdap.org; .es no publica RDAP) |
+
+- Nota de 0 a 10 ponderada (DMARC pesa más). Textos fijos en español, sin IA: coste por análisis ≈ 0 €.
+- Límite: 30 análisis por IP y día (`SCAN_DAILY_LIMIT`). Resultados en caché 1 h.
+- El técnico pone su nombre y teléfono en «Tu marca» y salen en el PDF (`Descargar PDF` usa la impresión del navegador).
+- Ejemplo de informe: `escaner/informe-ejemplo.pdf`.
+- Pruebas: `cd worker && npm test` (DNS y HTTP simulados).
+
+**Uso legal:** el análisis es de datos públicos, pero para captar clientes no envíes correos masivos en frío (LSSI/RGPD). Visita, llama o usa LinkedIn.
+
+---
+
 # FórmulaFácil
 
 MicroSaaS: describes en español lo que quieres y te devuelve la fórmula de Excel / Google Sheets **con nombres en español y separador `;`** (el hueco que dejan las herramientas en inglés).
