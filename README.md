@@ -9,6 +9,8 @@ Los dos comparten el mismo Cloudflare Worker (`worker/`): `GET /scan?d=dominio` 
 
 ## Escáner de seguridad
 
+**Probarlo en tu PC:** doble clic en `arrancar.bat` (Windows) o `./arrancar.sh` (Mac/Linux). Abre `http://localhost:8080/escaner/`. Requiere Node.js.
+
 Análisis **pasivo**: solo información pública. No escanea puertos ni prueba credenciales.
 
 | Área | Comprobación | Fuente |
