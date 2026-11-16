@@ -25,10 +25,10 @@
     if (text != null) e.textContent = text;
     return e;
   };
-  const icon = (id, cls = "ico") => {
+  const icon = (id, cls = "") => {
     const ns = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("class", cls);
+    if (cls) svg.setAttribute("class", cls);
     const use = document.createElementNS(ns, "use");
     use.setAttribute("href", "#" + id);
     svg.append(use);
@@ -67,8 +67,7 @@
     const hasBody = Boolean(c.fix || c.detail);
     const d = el("details", "check " + c.level + (hasBody ? "" : " no-body"));
     const s = el("summary");
-    const chev = icon("i-arrow", "ico chev");
-    s.append(el("span", "badge " + c.level, BADGE[c.level]), el("span", "check-title", c.title), chev, el("span", "check-sum", c.summary));
+    s.append(el("span", "badge " + c.level, BADGE[c.level]), el("span", "check-title", c.title), el("span", "check-sum", c.summary), icon("i-chev", "chev"));
     d.append(s);
     if (hasBody) {
       const body = el("div", "check-body");
@@ -107,8 +106,10 @@
       const area = el("section", "area");
       const head = el("div", "area-head");
       const issues = checks.filter((c) => c.level === "bad" || c.level === "warn").length;
-      head.append(icon(AREA[key].icon), el("h3", null, AREA[key].name), el("span", "area-meta", issues ? `${issues} ${issues === 1 ? "punto a revisar" : "puntos a revisar"}` : "Sin incidencias"));
-      area.append(head, ...checks.map(renderCheck));
+      head.append(icon(AREA[key].icon, ""), el("h3", null, AREA[key].name), el("span", "area-meta", issues ? `${issues} ${issues === 1 ? "punto a revisar" : "puntos a revisar"}` : "Sin incidencias"));
+      const cols = el("div", "cols");
+      cols.append(el("span", null, "Estado"), el("span", null, "Comprobación"), el("span", null, "Resultado"), el("span"));
+      area.append(head, cols, ...checks.map(renderCheck));
       groups.append(area);
     }
     $("report").hidden = false;
@@ -125,7 +126,7 @@
       const res = await fetch(`${API}?d=${encodeURIComponent(domain)}`);
       const data = await res.json();
       const left = res.headers.get("X-Remaining");
-      if (left !== null) $("quota").textContent = `Te quedan ${left} análisis gratuitos hoy.`;
+      if (left !== null) $("quota").textContent = `Sin registro · Solo datos públicos · Te quedan ${left} análisis hoy`;
       if (!res.ok) throw new Error(data.error || "Error");
       renderReport(data);
       history.replaceState(null, "", `?d=${encodeURIComponent(data.domain)}`);
@@ -145,7 +146,7 @@
     if (d) scan(d);
   });
   $("tech").addEventListener("change", () => document.body.classList.toggle("hide-tech", !$("tech").checked));
-  $("new").addEventListener("click", () => { $("domain").value = ""; window.scrollTo({ top: 0, behavior: "smooth" }); $("domain").focus(); });
+  $("new").addEventListener("click", () => { $("domain").value = ""; $("report").hidden = true; window.scrollTo({ top: 0, behavior: "smooth" }); $("domain").focus(); });
 
   // En el PDF van todos los puntos desplegados; al volver se restaura.
   let openState = [];
