@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Suplantable — Diagnóstico de seguridad del correo y la web</title>
-<meta name="description" content="Comprueba en segundos si alguien puede enviar correos haciéndose pasar por tu empresa y si tu web y tu dominio están bien protegidos. Gratis y sin registro.">
+<meta name="theme-color" content="#070a12">
+<title>Suplantable — ¿Pueden hacerse pasar por tu empresa?</title>
+<meta name="description" content="Comprueba en segundos si alguien puede enviar correos haciéndose pasar por tu empresa y si tu web y tu dominio están protegidos. Gratis, sin registro y solo con datos públicos.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="escaner.css">
 </head>
 <body>
@@ -23,59 +24,68 @@
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v4h4M9 12h6M9 16h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4m0 3h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
+
+<div class="bg-fx no-print" aria-hidden="true"><div class="glow glow-a"></div><div class="glow glow-b"></div><div class="grid-lines"></div></div>
 
 <header class="site-header no-print">
   <div class="wrap header-inner">
-    <a class="brandmark" href="./"><svg class="ico"><use href="#i-shield"/></svg><span>Suplantable</span></a>
+    <a class="brandmark" href="./"><span class="logo"><svg class="ico"><use href="#i-shield"/></svg></span>Suplantable</a>
     <nav class="nav">
+      <a href="#producto">Producto</a>
       <a href="#como">Cómo funciona</a>
-      <a href="#analizamos">Qué analizamos</a>
       <a href="#tecnicos">Para técnicos</a>
       <a href="#faq">Preguntas</a>
     </nav>
-    <a class="btn btn-sm" href="#top">Analizar gratis</a>
+    <a class="btn btn-sm btn-glass" href="#top">Analizar gratis</a>
   </div>
 </header>
 
 <main id="top">
   <!-- PORTADA -->
   <section class="hero no-print">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">Diagnóstico de seguridad para empresas</p>
-        <h1>¿Puede alguien enviar correos haciéndose pasar por tu empresa?</h1>
-        <p class="lead">Analizamos el correo, la web y el dominio de cualquier empresa en segundos y te explicamos cada riesgo en lenguaje claro, con los pasos para corregirlo.</p>
-        <form id="form" class="scan-form" autocomplete="off">
-          <label class="sr-only" for="domain">Dominio de la empresa</label>
-          <div class="input-wrap">
-            <svg class="ico"><use href="#i-globe"/></svg>
-            <input id="domain" inputmode="url" placeholder="tuempresa.es" required>
-          </div>
-          <button class="btn btn-lg" id="go" type="submit">Analizar <svg class="ico"><use href="#i-arrow"/></svg></button>
-        </form>
-        <p id="err" class="form-error" role="alert" hidden></p>
-        <ul class="trust">
-          <li><svg class="ico"><use href="#i-clock"/></svg>Resultado en 10 segundos</li>
-          <li><svg class="ico"><use href="#i-lock"/></svg>Sin registro</li>
-          <li><svg class="ico"><use href="#i-eye"/></svg>Solo datos públicos</li>
-        </ul>
-        <p id="quota" class="quota"></p>
-      </div>
+    <div class="wrap hero-inner">
+      <a class="pill" href="#producto"><span class="pill-dot"></span>Analiza SPF, DKIM, DMARC, HTTPS y DNSSEC en un clic <svg class="ico"><use href="#i-arrow"/></svg></a>
+      <h1>¿Pueden <span class="grad">hacerse pasar</span><br>por tu empresa?</h1>
+      <p class="lead">Escribe tu dominio y en 10 segundos sabrás si alguien puede enviar facturas falsas con tu correo, si tu web transmite confianza y qué hacer para corregirlo.</p>
 
-      <div class="hero-preview" aria-hidden="true">
-        <div class="preview-card">
-          <div class="preview-top">
-            <div>
-              <span class="label">Informe de seguridad</span>
-              <strong>inmobiliaria-ejemplo.es</strong>
+      <form id="form" class="scan-form" autocomplete="off">
+        <label class="sr-only" for="domain">Dominio de la empresa</label>
+        <div class="input-wrap">
+          <svg class="ico"><use href="#i-globe"/></svg>
+          <input id="domain" inputmode="url" placeholder="tuempresa.es" required>
+          <button class="btn btn-primary" id="go" type="submit">Analizar <svg class="ico"><use href="#i-arrow"/></svg></button>
+        </div>
+      </form>
+      <p id="err" class="form-error" role="alert" hidden></p>
+      <ul class="trust">
+        <li><svg class="ico"><use href="#i-clock"/></svg>Resultado en 10 s</li>
+        <li><svg class="ico"><use href="#i-lock"/></svg>Sin registro</li>
+        <li><svg class="ico"><use href="#i-eye"/></svg>Solo datos públicos</li>
+      </ul>
+      <p id="quota" class="quota"></p>
+    </div>
+
+    <!-- Vista previa del producto -->
+    <div class="wrap">
+      <div class="showcase">
+        <div class="window">
+          <div class="window-bar"><span></span><span></span><span></span><div class="window-url">suplantable.es/?d=inmobiliaria-ejemplo.es</div></div>
+          <div class="window-body">
+            <div class="mock-side">
+              <div class="ring ring-md bad"><svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="value" cx="60" cy="60" r="52" style="--p:.42"/></svg><span><b>4,2</b><small>de 10</small></span></div>
+              <p class="mock-verdict">Riesgo alto</p>
+              <div class="mock-counters"><span class="bad">2 críticos</span><span class="warn">3 mejorables</span><span class="ok">4 correctos</span></div>
             </div>
-            <div class="ring ring-sm bad"><svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="value" cx="60" cy="60" r="52" style="--p:.42"/></svg><span>4,2</span></div>
+            <div class="mock-list">
+              <div class="mock-row"><span class="badge bad">Crítico</span><div><b>DMARC</b><small>Cualquiera puede enviar correos con tu dirección</small></div></div>
+              <div class="mock-row"><span class="badge bad">Crítico</span><div><b>Certificado</b><small>Caduca en 6 días: la web mostrará «peligro»</small></div></div>
+              <div class="mock-row"><span class="badge warn">Mejorable</span><div><b>DKIM</b><small>Correos sin firma: más probable que vayan a spam</small></div></div>
+              <div class="mock-row"><span class="badge ok">Correcto</span><div><b>SPF</b><small>Servidores autorizados configurados</small></div></div>
+            </div>
           </div>
-          <div class="preview-row"><span class="badge bad">Crítico</span>Correo suplantable: sin DMARC</div>
-          <div class="preview-row"><span class="badge warn">Mejorable</span>Correos sin firma DKIM</div>
-          <div class="preview-row"><span class="badge warn">Mejorable</span>Certificado caduca en 9 días</div>
-          <div class="preview-row"><span class="badge ok">Correcto</span>Web con HTTPS válido</div>
         </div>
       </div>
     </div>
@@ -95,8 +105,8 @@
           </div>
           <div class="report-actions no-print">
             <label class="switch"><input type="checkbox" id="tech" checked><span></span>Detalles técnicos</label>
-            <button class="btn btn-ghost" id="new" type="button">Nuevo análisis</button>
-            <button class="btn" id="pdf" type="button"><svg class="ico"><use href="#i-download"/></svg>Descargar PDF</button>
+            <button class="btn btn-glass" id="new" type="button">Nuevo análisis</button>
+            <button class="btn btn-primary" id="pdf" type="button"><svg class="ico"><use href="#i-download"/></svg>Descargar PDF</button>
           </div>
         </div>
 
@@ -121,53 +131,93 @@
     </div>
   </section>
 
+  <!-- CINTA DE COMPROBACIONES -->
+  <section class="marquee no-print" aria-label="Comprobaciones">
+    <div class="marquee-track">
+      <span>SPF</span><span>DKIM</span><span>DMARC</span><span>HTTPS</span><span>HSTS</span><span>Content-Security-Policy</span><span>Certificado TLS</span><span>DNSSEC</span><span>Caducidad del dominio</span><span>Proveedor de correo</span>
+      <span>SPF</span><span>DKIM</span><span>DMARC</span><span>HTTPS</span><span>HSTS</span><span>Content-Security-Policy</span><span>Certificado TLS</span><span>DNSSEC</span><span>Caducidad del dominio</span><span>Proveedor de correo</span>
+    </div>
+  </section>
+
+  <!-- PRODUCTO (BENTO) -->
+  <section id="producto" class="section no-print">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Qué analizamos</p>
+        <h2>Los tres puntos por los que<br>entran los fraudes</h2>
+        <p class="lead">Revisamos lo mismo que miran Gmail, Outlook y los navegadores antes de confiar en tu empresa.</p>
+      </div>
+
+      <div class="bento">
+        <article class="tile tile-mail">
+          <div class="tile-icon"><svg class="ico"><use href="#i-mail"/></svg></div>
+          <h3>Correo electrónico</h3>
+          <p>Sin SPF, DKIM y DMARC, cualquiera puede enviar correos con tu dirección. Así se cuelan las facturas con la cuenta bancaria cambiada.</p>
+          <div class="fake-mail">
+            <div class="fm-head"><span class="fm-avatar">TE</span><div><b>Tu Empresa S.L.</b><small>facturas@tuempresa.es</small></div><span class="fm-flag"><svg class="ico"><use href="#i-alert"/></svg>Suplantado</span></div>
+            <p class="fm-subject">Cambio de cuenta bancaria para el pago de la factura 2026-114</p>
+            <p class="fm-body">Le informamos de que a partir de hoy los pagos deben realizarse a la cuenta ES91 2100 …</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="tile-icon violet"><svg class="ico"><use href="#i-globe"/></svg></div>
+          <h3>Página web</h3>
+          <p>Un certificado caducado muestra «sitio no seguro» a tus clientes.</p>
+          <div class="cert">
+            <div class="cert-row"><span>Certificado TLS</span><b class="warn-text">6 días</b></div>
+            <div class="bar"><span style="width:12%"></span></div>
+            <div class="cert-row small muted"><span>Cabeceras de seguridad</span><span>3 / 5</span></div>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="tile-icon"><svg class="ico"><use href="#i-server"/></svg></div>
+          <h3>Dominio</h3>
+          <p>Si caduca, pierdes a la vez web y correo. DNSSEC evita desvíos de tráfico.</p>
+          <ul class="mini-checks"><li class="ok"><svg class="ico"><use href="#i-check"/></svg>Pagado hasta 2027</li><li class="bad"><svg class="ico"><use href="#i-alert"/></svg>DNSSEC desactivado</li></ul>
+        </article>
+
+        <article class="tile tile-wide">
+          <div>
+            <div class="tile-icon violet"><svg class="ico"><use href="#i-doc"/></svg></div>
+            <h3>Informe en PDF que entiende cualquiera</h3>
+            <p>Sin jerga: cada riesgo explicado para el dueño del negocio y, debajo, cómo solucionarlo para el técnico. Listo para enviar o imprimir.</p>
+          </div>
+          <div class="pdf-stack" aria-hidden="true">
+            <div class="pdf-page back"></div>
+            <div class="pdf-page">
+              <i class="l w60"></i><i class="l w40 dim"></i>
+              <div class="pdf-score"><span>6,7</span></div>
+              <i class="l w90"></i><i class="l w80 dim"></i><i class="l w70 dim"></i>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- CIFRAS -->
-  <section class="stats no-print">
-    <div class="wrap stats-grid">
-      <div><b>122.223</b><span>incidentes gestionó INCIBE en 2025, un 26 % más que en 2024</span></div>
-      <div><b>12,8 %</b><span>de los dominios analizados bloquea los correos falsos (DMARC activo)</span></div>
-      <div><b>0 €</b><span>cuesta el análisis. Sin registro y sin instalar nada</span></div>
+  <section class="section section-tight no-print">
+    <div class="wrap stats">
+      <div class="stat"><b>122.223</b><span>incidentes gestionó INCIBE en 2025, un 26 % más que el año anterior</span></div>
+      <div class="stat"><b>12,8 %</b><span>de los dominios analizados en un estudio de 5,5 millones bloquea los correos falsos</span></div>
+      <div class="stat"><b>10 s</b><span>tarda el análisis. Gratis, sin registro y sin instalar nada</span></div>
     </div>
   </section>
 
   <!-- CÓMO FUNCIONA -->
   <section id="como" class="section no-print">
     <div class="wrap">
-      <p class="eyebrow">Cómo funciona</p>
-      <h2 class="section-title">Tres pasos, ningún riesgo</h2>
-      <div class="steps">
-        <div class="step"><span class="step-n">1</span><h3>Escribe el dominio</h3><p>La parte de la web o del correo después de la @. Por ejemplo, <em>tuempresa.es</em>.</p></div>
-        <div class="step"><span class="step-n">2</span><h3>Revisamos lo público</h3><p>Consultamos los registros DNS, el certificado y la configuración web, igual que haría cualquier atacante. No tocamos nada.</p></div>
-        <div class="step"><span class="step-n">3</span><h3>Recibe el informe</h3><p>Una nota de 0 a 10, los riesgos ordenados por gravedad y cómo resolver cada uno. Descargable en PDF.</p></div>
+      <div class="section-head center">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2>Tres pasos. Cero riesgo.</h2>
       </div>
-    </div>
-  </section>
-
-  <!-- QUÉ ANALIZAMOS -->
-  <section id="analizamos" class="section section-alt no-print">
-    <div class="wrap">
-      <p class="eyebrow">Qué analizamos</p>
-      <h2 class="section-title">Los tres puntos por los que entran los fraudes</h2>
-      <div class="cards">
-        <article class="card">
-          <div class="card-icon"><svg class="ico"><use href="#i-mail"/></svg></div>
-          <h3>Correo electrónico</h3>
-          <p>Si falta la configuración SPF, DKIM o DMARC, cualquiera puede enviar facturas falsas con tu dirección, y tus correos legítimos acaban en spam.</p>
-          <ul class="checklist"><li>SPF: servidores autorizados</li><li>DKIM: firma de los correos</li><li>DMARC: bloqueo de suplantaciones</li></ul>
-        </article>
-        <article class="card">
-          <div class="card-icon"><svg class="ico"><use href="#i-globe"/></svg></div>
-          <h3>Página web</h3>
-          <p>Un certificado caducado muestra un aviso de «sitio peligroso». Sin las cabeceras de seguridad, la web es más fácil de atacar.</p>
-          <ul class="checklist"><li>HTTPS y redirección segura</li><li>Caducidad del certificado</li><li>Cabeceras de seguridad</li></ul>
-        </article>
-        <article class="card">
-          <div class="card-icon"><svg class="ico"><use href="#i-server"/></svg></div>
-          <h3>Dominio</h3>
-          <p>Si el dominio caduca, se pierden a la vez la web y el correo. DNSSEC impide que alguien desvíe el tráfico.</p>
-          <ul class="checklist"><li>Fecha de caducidad</li><li>DNSSEC</li><li>Proveedor de correo</li></ul>
-        </article>
-      </div>
+      <ol class="steps">
+        <li><span class="step-n">01</span><h3>Escribe el dominio</h3><p>Lo que va después de la @ en tu correo. Por ejemplo, <em>tuempresa.es</em>.</p></li>
+        <li><span class="step-n">02</span><h3>Revisamos lo público</h3><p>DNS, certificado y configuración web, igual que haría un atacante. Sin tocar nada.</p></li>
+        <li><span class="step-n">03</span><h3>Recibe el informe</h3><p>Nota de 0 a 10, riesgos ordenados por gravedad y la solución de cada uno.</p></li>
+      </ol>
     </div>
   </section>
 
@@ -176,38 +226,59 @@
     <div class="wrap tech-grid">
       <div>
         <p class="eyebrow">Para técnicos y empresas de informática</p>
-        <h2 class="section-title">Entrega el informe con tu marca</h2>
-        <p class="lead">Añade tus datos y aparecerán en la cabecera y el cierre del PDF. Úsalo en la primera visita a un cliente: le enseña el problema y te deja a ti como la persona que lo resuelve.</p>
-        <ul class="checklist"><li>Tu nombre, teléfono, email y web en el informe</li><li>Opción de ocultar los detalles técnicos</li><li>Los datos se guardan solo en tu navegador</li></ul>
+        <h2>Tu marca en cada informe</h2>
+        <p class="lead">Úsalo en la primera visita a un cliente: le enseña el problema con datos y te deja a ti como quien lo resuelve.</p>
+        <ul class="list-check">
+          <li><svg class="ico"><use href="#i-check"/></svg>Tu nombre y contacto en la cabecera y el cierre del PDF</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Oculta los detalles técnicos para el cliente final</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Tus datos se guardan solo en tu navegador</li>
+        </ul>
       </div>
-      <form class="card brand-form" onsubmit="return false">
-        <h3><svg class="ico"><use href="#i-doc"/></svg>Tu marca en el informe</h3>
+      <form class="glass brand-form" onsubmit="return false">
+        <h3>Tu marca en el informe</h3>
         <label>Nombre o empresa<input id="b-name" placeholder="Josep Pérez · Soporte IT"></label>
-        <label>Teléfono<input id="b-phone" placeholder="600 000 000"></label>
+        <div class="two">
+          <label>Teléfono<input id="b-phone" placeholder="600 000 000"></label>
+          <label>Web<input id="b-web" placeholder="tuempresa.es"></label>
+        </div>
         <label>Email<input id="b-email" type="email" placeholder="hola@tuempresa.es"></label>
-        <label>Web<input id="b-web" placeholder="tuempresa.es"></label>
         <p class="muted small">Se aplica al momento al informe que tengas abierto.</p>
       </form>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="section section-alt no-print">
+  <section id="faq" class="section no-print">
     <div class="wrap narrow">
-      <p class="eyebrow">Preguntas frecuentes</p>
-      <h2 class="section-title">Lo que suelen preguntar</h2>
-      <details><summary>¿Es legal analizar el dominio de otra empresa?</summary><p>Sí. Solo leemos información que cualquiera puede consultar: registros DNS, el certificado de la web y sus cabeceras. No escaneamos puertos, no probamos contraseñas y no accedemos a ningún sistema.</p></details>
-      <details><summary>¿Qué es exactamente «suplantar» el correo?</summary><p>Enviar un correo que aparece como remitido desde tu dirección (por ejemplo, facturas@tuempresa.es) sin tener acceso a tu cuenta. Es la base del fraude de facturas con cuentas bancarias cambiadas y del «fraude del CEO».</p></details>
-      <details><summary>Mi nota es baja. ¿Me han hackeado?</summary><p>No. La nota mide lo expuesta que está tu empresa, no si ha sufrido un ataque. La mayoría de los problemas se corrigen en una o dos horas de trabajo técnico.</p></details>
-      <details><summary>¿Guardáis los resultados?</summary><p>Los guardamos una hora en caché para responder más rápido si se repite el análisis. No pedimos ni guardamos datos personales.</p></details>
+      <div class="section-head center">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2>Lo que suelen preguntar</h2>
+      </div>
+      <div class="faq">
+        <details><summary>¿Es legal analizar el dominio de otra empresa?</summary><p>Sí. Solo leemos información que cualquiera puede consultar: registros DNS, el certificado de la web y sus cabeceras. No escaneamos puertos, no probamos contraseñas y no accedemos a ningún sistema.</p></details>
+        <details><summary>¿Qué significa exactamente «suplantar» el correo?</summary><p>Enviar un correo que aparece como remitido desde tu dirección (por ejemplo, facturas@tuempresa.es) sin tener acceso a tu cuenta. Es la base del fraude de facturas con la cuenta bancaria cambiada y del «fraude del CEO».</p></details>
+        <details><summary>Mi nota es baja. ¿Me han hackeado?</summary><p>No. La nota mide lo expuesta que está tu empresa, no si ha sufrido un ataque. La mayoría de los problemas se corrigen en una o dos horas de trabajo técnico.</p></details>
+        <details><summary>¿Guardáis los resultados?</summary><p>Una hora en caché, para responder más rápido si se repite el análisis. No pedimos ni guardamos datos personales.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="section no-print">
+    <div class="wrap">
+      <div class="cta">
+        <h2>Descubre tu nota en 10 segundos</h2>
+        <p class="lead">Gratis, sin registro y sin instalar nada.</p>
+        <a class="btn btn-primary btn-lg" href="#top">Analizar mi dominio <svg class="ico"><use href="#i-arrow"/></svg></a>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="site-footer no-print">
   <div class="wrap footer-inner">
-    <a class="brandmark" href="./"><svg class="ico"><use href="#i-shield"/></svg><span>Suplantable</span></a>
-    <p class="muted small">Análisis pasivo de información pública. Límite de 30 análisis al día por conexión.</p>
+    <a class="brandmark" href="./"><span class="logo"><svg class="ico"><use href="#i-shield"/></svg></span>Suplantable</a>
+    <p class="muted small">Análisis pasivo de información pública · 30 análisis al día por conexión</p>
   </div>
 </footer>
 
